@@ -1,0 +1,24 @@
+# Arquivos e pastas do sistema
+.DS_Store
+Thumbs.db
+
+# Ambientes e configs sensíveis
+.env
+.env.*
+!example.env
+
+# Dependências e builds
+node_modules/
+dist/
+target/
+out/
+build/
+
+# Docker
+postgres-data-clientes/
+postgres-data-admin/
+
+# IDE e ferramentas
+.idea/
+.vscode/
+*.iml
