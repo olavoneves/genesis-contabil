@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  postgres_admin:
+    image: postgres:16
+    container_name: genesis_postgres_admin
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: genesis_admin
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres-data-admin:/var/lib/postgresql/data
+
+  genesis_backend_admin:
+    build: .
+    container_name: genesis_backend_admin
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on:
+      - postgres_admin
