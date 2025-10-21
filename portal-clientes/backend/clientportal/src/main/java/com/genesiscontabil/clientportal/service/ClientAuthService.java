@@ -27,6 +27,9 @@ public class ClientAuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailVerificationService emailVerificationService;
+
     public ResponseEntity<ClientLoginResponse> login(ClientLoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCpfCnpj(), request.getPassword()));
 
@@ -37,5 +40,25 @@ public class ClientAuthService {
         String refreshToken = jwtUtil.generateRefreshToken(user.getIdentifier());
 
         return ResponseEntity.ok(new ClientLoginResponse(token, refreshToken, user.getName()));
+    }
+
+    public ResponseEntity<String> requestVerification(String email) {
+        emailVerificationService.sendVerificationCode(email);
+        return ResponseEntity.ok("Código de verificação enviado para o e-mail informado.");
+    }
+
+    public ResponseEntity<String> verifyCode(String email, String code) {
+        emailVerificationService.verifyCode(email, code);
+        return ResponseEntity.ok("E-mail verificado com sucesso.");
+    }
+
+    public ResponseEntity<String> resetPassword(String email, String newPassword) {
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com este e-mail."));
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(user);
+
+        return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
 }
