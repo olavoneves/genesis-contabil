@@ -1,5 +1,6 @@
 package com.genesiscontabil.adminportal.model;
 
+import com.genesiscontabil.adminportal.dto.AdminUserDTO;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,4 +38,8 @@ public class AdminUser {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public AdminUser(AdminUserDTO adminUser) {
+        this.username = adminUser.username();
+        this.password = adminUser.password();
+    }
 }
