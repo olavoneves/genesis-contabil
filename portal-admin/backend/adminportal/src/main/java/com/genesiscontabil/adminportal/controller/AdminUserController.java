@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/admin")
 public class AdminUserController {
 
     @Autowired
     private AdminUserService service;
 
-    @PostMapping("/admin-user")
+    @PostMapping("/register")
     @Transactional
     public ResponseEntity save(@RequestBody @Valid AdminUserDTO adminUser, UriComponentsBuilder uri) {
         return service.save(adminUser, uri);
